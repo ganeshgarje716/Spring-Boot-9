@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Products</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* Navbar */
+.navbar{
+    background:#2563eb;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+.nav-links a:hover{
+    text-decoration:underline;
+}
+
+/* Container */
+.container{
+    width:95%;
+    margin:40px auto;
+}
+
+/* Header */
+.page-header{
+    background:#2563eb;
+    color:white;
+    padding:15px;
+    text-align:center;
+    border-radius:10px 10px 0 0;
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* Table */
+.table-container{
+    background:white;
+    padding:20px;
+    border-radius:0 0 10px 10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#2563eb;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+
+table tr:hover{
+    background:#f1f5f9;
+}
+
+/* Image */
+.product-img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+/* Buttons */
+.btn{
+    padding:8px 15px;
+    border-radius:5px;
+    text-decoration:none;
+    color:white;
+    font-weight:bold;
+    margin:3px;
+    display:inline-block;
+}
+
+.update-btn{
+    background:#f59e0b;
+}
+
+.update-btn:hover{
+    background:#d97706;
+}
+
+.delete-btn{
+    background:#ef4444;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
+
+.add-btn{
+    background:#22c55e;
+    margin-bottom:20px;
+}
+
+.add-btn:hover{
+    background:#16a34a;
+}
+
+.top-btn{
+    text-align:right;
+    margin-bottom:15px;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">Product Store</div>
+
+    <div class="nav-links">
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/product-form}">Add Product</a>
+        <a th:href="@{/all-products}">All Products</a>
+    </div>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+    <div class="top-btn">
+        <a th:href="@{/product-form}" class="btn add-btn">
+            Add New Product
+        </a>
+    </div>
+
+    <div class="page-header">
+        All Products
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Image Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr th:each="product : ${products}">
+
+                    <td th:text="${product.id}"></td>
+
+                    <td>
+                        <img class="product-img"
+                             th:src="@{'/uploads/' + ${product.imageName}}">
+                    </td>
+
+                    <td th:text="${product.name}"></td>
+
+                    <td>
+                        ₹ <span th:text="${product.price}"></span>
+                    </td>
+
+                    <td th:text="${product.quantity}"></td>
+
+                    <td th:text="${product.imageName}"></td>
+
+                    <td>
+
+                        <a th:href="@{/update-product/{id}(id=${product.id})}"
+                           class="btn update-btn">
+                            Update
+                        </a>
+
+                        <a th:href="@{/all-products/{id}(id=${product.id})}"
+                           class="btn delete-btn"
+                           onclick="return confirm('Are you sure you want to delete this product?')">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
