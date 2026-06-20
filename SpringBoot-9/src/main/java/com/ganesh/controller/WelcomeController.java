@@ -44,24 +44,33 @@ public class WelcomeController {
 	}
 	
 	
-	@PostMapping("/save-product")
-	public String saveProduct(Products product, @RequestParam("image") MultipartFile file, Model model)throws Exception {
-
-	    String filename = file.getOriginalFilename();
-	    
-	    long value = System.currentTimeMillis();
-
-	    product.setImageName(value+"_"+filename);
+	@PostMapping({"/save-product","/update-product"})
+	public String saveProduct(Products product,
+	        @RequestParam("image") MultipartFile file,
+	        Model model) throws Exception {
 
 	    String uploadPath ="C:\\Users\\Ganesh\\OneDrive\\Desktop\\uploadProducts\\";
-	    
+
+	    File folder = new File(uploadPath);
+
+	    if (!folder.exists()) {
+	        folder.mkdirs();
+	    }
+
+	    if (!file.isEmpty()) {
+
+	        String fileName =System.currentTimeMillis() + "_" +file.getOriginalFilename();
+
+	        product.setImageName(fileName);
+
+	        file.transferTo(new File(folder, fileName));
+	    }
+
 	    productsRepository.save(product);
 
-	    file.transferTo(new File(uploadPath, filename));
-	    
 	    model.addAttribute("product", product);
 
-	    return "save-product";
+	    return "redirect:/all-products";
 	}
 	
 	
@@ -90,6 +99,9 @@ public class WelcomeController {
 		
 		return "/update-product";
 	}
+	
+	
+	
 	
 	
 	
