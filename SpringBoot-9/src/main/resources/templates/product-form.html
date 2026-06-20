@@ -115,7 +115,11 @@ input:focus{
 
     <h2>Add Product</h2>
 
-    <form th:action="@{save-product}" method="post" th:object=${product}>
+    <form th:action="@{/save-product}"
+          method="post" 
+          th:object="${product}"
+          enctype="multipart/form-data"
+          >
 
         <div class="form-group">
             <label>Product ID</label>
@@ -139,7 +143,7 @@ input:focus{
 
         <div class="form-group">
             <label>Product Image</label>
-            <input type="file" th:field="*{imageName}">
+            <input type="file" name="image">
         </div>
 
         <button type="submit" class="btn">Save Product</button>
